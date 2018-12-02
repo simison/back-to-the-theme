@@ -1,0 +1,40 @@
+
+.back-to-the-theme-delorean {
+	max-width: 600px;
+	margin: 20px;
+}
+
+@media (max-width: 800px) {
+	.back-to-the-theme-delorean {
+		display: none;
+	}
+}
+
+@media (max-width: 1024px) {
+	.back-to-the-theme-delorean {
+		max-width: 400px;
+	}
+}
+
+#back-to-the-theme-fullscreen {
+	background-color: #111;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center top;
+	cursor: zoom-out;
+	display: none;
+	height: 100%;
+	margin: 0 auto;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10000;
+}
+
+#back-to-the-theme {
+	margin-top: 20px;
+}
+
+#back-to-the-theme .theme {
+	cursor: zoom-in;
+}
