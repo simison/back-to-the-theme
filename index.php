@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Back To The Theme
  * Description: Capture screenshots of a page with different themes, just like that!
- * Version: 1.0.0
+ * Version: 1.1.0
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Author URI:  https://www.mikaelkorpela.fi
