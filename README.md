@@ -12,6 +12,8 @@ See a page with different themes all at once, just like that!
 4. Choose your page, themes and options
 5. Do it!
 
+You'll see your page load with different themes in a bunch of iframes for handy preview and debugging.
+
 ## A nice list of popular themes to test
 
 ```
