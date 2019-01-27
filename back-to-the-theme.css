@@ -1,40 +1,20 @@
-
-.back-to-the-theme-delorean {
-	max-width: 600px;
-	margin: 20px;
+.back-to-the-theme-container {
+	margin-top: 40px;
 }
 
-@media (max-width: 800px) {
-	.back-to-the-theme-delorean {
-		display: none;
-	}
+.back-to-the-theme-preview {
+	margin-bottom: 40px;
 }
 
-@media (max-width: 1024px) {
-	.back-to-the-theme-delorean {
-		max-width: 400px;
-	}
+.back-to-the-theme-preview h2 {
+	font-size: 2em;
+	margin: 0 0 0.5em;
 }
 
-#back-to-the-theme-fullscreen {
-	background-color: #111;
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center top;
-	cursor: zoom-out;
-	display: none;
-	height: 100%;
-	margin: 0 auto;
-	position: fixed;
-	top: 0;
+.back-to-the-theme-preview iframe {
+	background: #fff;
+	border: 2px solid #eee;
+	min-height: 800px;
+	resize: both;
 	width: 100%;
-	z-index: 10000;
-}
-
-#back-to-the-theme {
-	margin-top: 20px;
-}
-
-#back-to-the-theme .theme {
-	cursor: zoom-in;
 }
