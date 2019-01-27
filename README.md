@@ -2,17 +2,17 @@
 
 See a page with different themes all at once, just like that!
 
-<img src="delorean.gif" alt="" />
-
 ## Instructions
 
-1. Install themes you want to test
-2. Create a page you want to test
-3. Navigate to Tools → Back To The Theme
+1. Install themes
+2. Create a page
+3. Navigate to _Tools_ → _Back To The Theme_
 4. Choose your page, themes and options
 5. Do it!
 
 You'll see your page load with different themes in a bunch of iframes for handy preview and debugging.
+
+<img src="delorean.gif" alt="" />
 
 ## A nice list of popular themes to test
 

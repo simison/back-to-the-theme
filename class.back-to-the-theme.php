@@ -95,7 +95,7 @@ class BackToTheTheme {
 		?>
 		<div class="wrap">
 			<h1>Back To The Theme</h1>
-			<p>Render pages on different themes simultaneously.</p>
+			<p>See a page on different themes simultaneously, just like that!</p>
 			<?php
 				self::render_form( $themes );
 				self::render_previews( $themes );
