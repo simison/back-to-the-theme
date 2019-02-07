@@ -6,7 +6,7 @@ See a page with different themes all at once, just like that!
 
 1. Download the [latest zip](https://github.com/simison/back-to-the-theme/archive/master.zip) for this plugin.
 2. Upload it to your WordPress site through _Plugins_ → _Add New_ → _Upload Plugin_.
-3. Activate the plugin. 
+3. Activate the plugin.
 
 ## How to Use
 
@@ -26,16 +26,26 @@ You'll see your page load with different themes in a bunch of iframes for handy 
 
 ```
 wp theme install \
-  storefront \
-  twentyeleven \
-  twentyfifteen \
-  twentyfourteen \
-  twentynineteen \
-  twentyseventeen \
-  twentysixteen \
-  twentyten \
-  twentythirteen \
-  twentytwelve
+	astra \
+	colormag \
+	customizr \
+	generatepress \
+	hestia \
+	hueman \
+	oceanwp \
+	shapely \
+	storefront \
+	sydney \
+	twentyeleven \
+	twentyfifteen \
+	twentyfourteen \
+	twentynineteen \
+	twentyseventeen \
+	twentysixteen \
+	twentyten \
+	twentythirteen \
+	twentytwelve \
+	vantage
 ```
 
 See docs for [`wp theme install`](https://developer.wordpress.org/cli/commands/theme/install/).
