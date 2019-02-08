@@ -105,8 +105,12 @@ class BackToTheTheme {
 	}
 
 	static function render_previews( $themes ) {
-		if ( ! isset( $_POST[ 'back_to_the_theme' ] ) || ! isset( $_POST[ 'page_id' ] ) ) {
+	    if ( ! isset( $_POST[ 'back_to_the_theme' ] ) ) {
 			return;
+		}
+
+        if ( ! isset( $_POST[ 'page_id' ] ) && ! isset( $_POST[ 'back-to-the-theme-post-id' ] ) ) {
+            return;
 		}
 
 		if (
@@ -121,7 +125,7 @@ class BackToTheTheme {
 		<div id="back-to-the-theme-previews" class="back-to-the-theme-container">
 			<?php
 				$secret = self::update_secret();
-				$page_id = absint( $_POST['page_id'] );
+				$post_id = isset( $_POST['back-to-the-theme-post-id'] ) && intval( $_POST['back-to-the-theme-post-id'] ) ? intval( $_POST['back-to-the-theme-post-id'] ) : absint( $_POST['page_id'] );
 				$hide_admin_bar = isset( $_POST['back-to-the-theme-hide-admin-bar'] );
 
 				foreach( $_POST['back_to_the_theme'] as $theme => $k ) {
@@ -130,7 +134,7 @@ class BackToTheTheme {
 						continue;
 					}
 
-					$url = self::get_preview_url( $theme, $page_id, $secret, $hide_admin_bar );
+					$url = self::get_preview_url( $theme, $post_id, $secret, $hide_admin_bar );
 					$theme_name = $themes[ $theme ]->get( 'Name' );
 					$theme_version = $themes[ $theme ]->get( 'Version' );
 					?>
@@ -175,8 +179,18 @@ class BackToTheTheme {
 				<strong><?php esc_html_e( 'Choose a page', 'back-to-the-theme' ); ?></strong><br/>
 				<?php wp_dropdown_pages(); ?>
 			</label>
+            <br />
+            <label>
+                <strong><?php esc_html_e( 'Or enter a Post ID', 'back-to-the-theme' ); ?></strong><br/>
+                <input
+                        id="back-to-the-theme-post-id"
+                        name="back-to-the-theme-post-id"
+                        type="text"
+                        value="<?php echo isset( $_POST['back-to-the-theme-post-id'] ) ? esc_attr( $_POST['back-to-the-theme-post-id'] ) : ''; ?>"
+                >
+            </label>
 
-			<br /><br />
+            <br /><br />
 
 			<label for="back-to-the-theme-hide-admin-bar">
 				<input
