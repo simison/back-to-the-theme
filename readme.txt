@@ -1,5 +1,5 @@
 === Back To The Theme ===
-Contributors: simison
+Contributors: simison, migueluy, oskosk
 Tags: development, testing, debug, themes
 Requires at least: 4.6
 Tested up to: 5.0
