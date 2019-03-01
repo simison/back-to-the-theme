@@ -1,7 +1,7 @@
 <?php
 
 class BackToTheTheme {
-	private static $version = '1.1.0';
+	private static $version = '1.2.0';
 
 	public static function init() {
 		if( is_admin() ) {
