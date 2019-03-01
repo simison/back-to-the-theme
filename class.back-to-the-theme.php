@@ -171,6 +171,8 @@ class BackToTheTheme {
 	}
 
 	static function render_form( $themes ) {
+		$hide_admin_bar = isset( $_POST['back-to-the-theme-hide-admin-bar'] ) || empty( $_POST );
+
 		?>
 		<form method="post" action="<?php echo admin_url('tools.php?page=back-to-the-theme'); ?>#back-to-the-theme-previews">
 			<?php wp_nonce_field( 'generate_previews', 'back_to_my_theme_nonce' ); ?>
@@ -192,9 +194,9 @@ class BackToTheTheme {
 
 			<br /><br />
 
-			<label for="back-to-the-theme-hide-admin-bar">
+			<label>
 				<input
-					<?php checked( '1', isset( $_POST['back-to-the-theme-hide-admin-bar'] ) ); ?>
+					<?php checked( '1', $hide_admin_bar ); ?>
 					id="back-to-the-theme-hide-admin-bar"
 					name="back-to-the-theme-hide-admin-bar"
 					type="checkbox"
