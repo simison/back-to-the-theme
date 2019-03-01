@@ -179,18 +179,18 @@ class BackToTheTheme {
 				<strong><?php esc_html_e( 'Choose a page', 'back-to-the-theme' ); ?></strong><br/>
 				<?php wp_dropdown_pages(); ?>
 			</label>
-            <br />
-            <label>
-                <strong><?php esc_html_e( 'Or enter a Post ID', 'back-to-the-theme' ); ?></strong><br/>
-                <input
-                        id="back-to-the-theme-post-id"
-                        name="back-to-the-theme-post-id"
-                        type="text"
-                        value="<?php echo isset( $_POST['back-to-the-theme-post-id'] ) ? esc_attr( $_POST['back-to-the-theme-post-id'] ) : ''; ?>"
-                >
-            </label>
+			<br />
+			<label>
+					<strong><?php esc_html_e( 'Or enter a Post ID', 'back-to-the-theme' ); ?></strong><br/>
+					<input
+									id="back-to-the-theme-post-id"
+									name="back-to-the-theme-post-id"
+									type="text"
+									value="<?php echo isset( $_POST['back-to-the-theme-post-id'] ) ? esc_attr( $_POST['back-to-the-theme-post-id'] ) : ''; ?>"
+					>
+			</label>
 
-            <br /><br />
+			<br /><br />
 
 			<label for="back-to-the-theme-hide-admin-bar">
 				<input
