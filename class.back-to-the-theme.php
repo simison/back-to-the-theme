@@ -74,7 +74,7 @@ class BackToTheTheme {
 		return $theme ? $theme->stylesheet : $stylesheet;
 	}
 
-	public static function get_preview_url( $theme, $id, $secret, $hide_admin_bar ) {
+	public static function get_preview_url( $theme, $id, $secret, $hide_admin_bar, $side ) {
 		$query_args = array(
 			'back-to-the-theme-secret' => $secret,
 			'back-to-the-theme' => $theme,
@@ -85,7 +85,11 @@ class BackToTheTheme {
 			$query_args['back-to-the-theme-hide-admin-bar'] = true;
 		}
 
-		return add_query_arg( $query_args, get_permalink( $id ) );
+		$url = $side === 'editor'
+			? admin_url( 'post.php?post=' . absint( $id ) . '&action=edit' )
+			: get_permalink( $id );
+
+		return add_query_arg( $query_args, $url );
 	}
 
 	public static function render_admin_page() {
@@ -102,6 +106,12 @@ class BackToTheTheme {
 			?>
 		</div>
 		<?php
+	}
+
+	static function get_side() {
+		return ! empty( $_POST['back-to-the-theme-side'] ) && in_array( $_POST['back-to-the-theme-side'], array( 'view', 'editor' ) )
+			? $_POST['back-to-the-theme-side']
+			: 'view';
 	}
 
 	static function render_previews( $themes ) {
@@ -125,8 +135,11 @@ class BackToTheTheme {
 		<div id="back-to-the-theme-previews" class="back-to-the-theme-container">
 			<?php
 				$secret = self::update_secret();
-				$post_id = isset( $_POST['back-to-the-theme-post-id'] ) && intval( $_POST['back-to-the-theme-post-id'] ) ? intval( $_POST['back-to-the-theme-post-id'] ) : absint( $_POST['page_id'] );
+				$side = self::get_side();
 				$hide_admin_bar = isset( $_POST['back-to-the-theme-hide-admin-bar'] );
+				$id = isset( $_POST['back-to-the-theme-post-id'] ) && intval( $_POST['back-to-the-theme-post-id'] )
+					? intval( $_POST['back-to-the-theme-post-id'] )
+					: absint( $_POST['page_id'] );
 
 				foreach( $_POST['back_to_the_theme'] as $theme => $k ) {
 					if ( ! isset( $themes[ $theme ] ) ) {
@@ -134,7 +147,7 @@ class BackToTheTheme {
 						continue;
 					}
 
-					$url = self::get_preview_url( $theme, $post_id, $secret, $hide_admin_bar );
+					$url = self::get_preview_url( $theme, $id, $secret, $hide_admin_bar, $side );
 					$theme_name = $themes[ $theme ]->get( 'Name' );
 					$theme_version = $themes[ $theme ]->get( 'Version' );
 					?>
@@ -171,6 +184,7 @@ class BackToTheTheme {
 	}
 
 	static function render_form( $themes ) {
+		$side = self::get_side();
 		$hide_admin_bar = isset( $_POST['back-to-the-theme-hide-admin-bar'] ) || empty( $_POST );
 
 		?>
@@ -185,14 +199,26 @@ class BackToTheTheme {
 			<label>
 					<strong><?php esc_html_e( 'Or enter a Post ID', 'back-to-the-theme' ); ?></strong><br/>
 					<input
-									id="back-to-the-theme-post-id"
-									name="back-to-the-theme-post-id"
-									type="text"
-									value="<?php echo isset( $_POST['back-to-the-theme-post-id'] ) ? esc_attr( $_POST['back-to-the-theme-post-id'] ) : ''; ?>"
+						id="back-to-the-theme-post-id"
+						name="back-to-the-theme-post-id"
+						type="text"
+						value="<?php echo isset( $_POST['back-to-the-theme-post-id'] ) ? esc_attr( $_POST['back-to-the-theme-post-id'] ) : ''; ?>"
 					>
 			</label>
 
 			<br /><br />
+
+			<p>
+				<label>
+					<input type="radio" name="back-to-the-theme-side" value="view" <?php checked( 'view', $side ); ?> />
+					<?php _e( 'Show view side', 'back-to-the-theme' ); ?>
+				</label>
+				<br />
+				<label>
+					<input type="radio" name="back-to-the-theme-side" value="editor" <?php checked( 'editor', $side ); ?> />
+					<?php _e( 'Show editor side', 'back-to-the-theme' ); ?>
+				</label>
+			</p>
 
 			<label>
 				<input
