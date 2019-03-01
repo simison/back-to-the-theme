@@ -105,12 +105,12 @@ class BackToTheTheme {
 	}
 
 	static function render_previews( $themes ) {
-	    if ( ! isset( $_POST[ 'back_to_the_theme' ] ) ) {
+		if ( empty( $_POST[ 'back_to_the_theme' ] ) ) {
 			return;
 		}
 
-        if ( ! isset( $_POST[ 'page_id' ] ) && ! isset( $_POST[ 'back-to-the-theme-post-id' ] ) ) {
-            return;
+		if ( ! isset( $_POST[ 'page_id' ] ) && ! isset( $_POST[ 'back-to-the-theme-post-id' ] ) ) {
+			return;
 		}
 
 		if (
