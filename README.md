@@ -4,7 +4,7 @@ See a page with different themes all at once, just like that!
 
 ## Installation
 
-1. Download the [latest zip](https://github.com/simison/back-to-the-theme/archive/master.zip) for this plugin.
+1. Download the [latest zip](https://github.com/simison/back-to-the-theme/archive/master.zip) for this plugin or install it from [Plugin directory](https://wordpress.org/plugins/back-to-the-theme/)
 2. Upload it to your WordPress site through _Plugins_ → _Add New_ → _Upload Plugin_.
 3. Activate the plugin.
 
