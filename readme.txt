@@ -30,7 +30,6 @@ You'll see your page load with different themes in a bunch of iframes for handy 
 
 A nice list of popular themes to test:
 
-```
 wp theme install \
   astra \
   colormag \
@@ -52,7 +51,6 @@ wp theme install \
   twentythirteen \
   twentytwelve \
   vantage
-```
 
 See docs for [wp theme install](https://developer.wordpress.org/cli/commands/theme/install/).
 
