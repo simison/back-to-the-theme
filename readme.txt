@@ -2,7 +2,7 @@
 Contributors: simison, migueluy, oskosk
 Tags: development, testing, debug, themes
 Requires at least: 4.6
-Tested up to: 5.1
+Tested up to: 6.7
 Stable tag: trunk
 Requires PHP: 5.6.0
 License: GPLv2 or later
