@@ -14,9 +14,9 @@ class BackToTheTheme {
 			add_filter( 'template', array( __CLASS__, 'switch_template' ) );
 			add_filter( 'stylesheet', array( __CLASS__, 'switch_stylesheet' ) );
 
-			if ( isset( $_GET['back-to-the-theme-hide-admin-bar'] ) ) {
-				add_filter( 'show_admin_bar', '__return_false' );
-			}
+			// always hide the admin bar in the preview.
+			add_filter( 'show_admin_bar', '__return_false' );
+
 		}
 	}
 
@@ -74,7 +74,7 @@ class BackToTheTheme {
 		return $theme ? $theme->stylesheet : $stylesheet;
 	}
 
-	public static function get_preview_url( $theme, $id, $secret, $hide_admin_bar, $side ) {
+	public static function get_preview_url( $theme, $id, $secret, $hide_admin_bar = true, $side ) {
 		$query_args = array(
 			'back-to-the-theme-secret' => $secret,
 			'back-to-the-theme' => $theme,
@@ -85,9 +85,13 @@ class BackToTheTheme {
 			$query_args['back-to-the-theme-hide-admin-bar'] = true;
 		}
 
-		$url = $side === 'editor'
+		if ( empty( $id ) ) {
+			$url = home_url();
+		} else {
+			$url = $side === 'editor'
 			? admin_url( 'post.php?post=' . absint( $id ) . '&action=edit' )
 			: get_permalink( $id );
+		}
 
 		return add_query_arg( $query_args, $url );
 	}
@@ -98,7 +102,7 @@ class BackToTheTheme {
 
 		?>
 		<div class="wrap">
-			<h1>Back To The Theme</h1>
+			<h1 id="back-to-the-theme-themes">Back To The Theme</h1>
 			<p>See a page on different themes simultaneously, just like that!</p>
 			<?php
 				self::render_form( $themes );
@@ -109,68 +113,56 @@ class BackToTheTheme {
 	}
 
 	static function get_side() {
-		return ! empty( $_POST['back-to-the-theme-side'] ) && in_array( $_POST['back-to-the-theme-side'], array( 'view', 'editor' ) )
-			? $_POST['back-to-the-theme-side']
+		return isset( $_GET['back-to-the-theme-side'] ) && in_array( $_GET['back-to-the-theme-side'], array( 'view', 'editor' ) )
+			? $_GET['back-to-the-theme-side']
 			: 'view';
 	}
 
 	static function render_previews( $themes ) {
-		if ( empty( $_POST[ 'back_to_the_theme' ] ) ) {
-			return;
-		}
-
-		if ( ! isset( $_POST[ 'page_id' ] ) && ! isset( $_POST[ 'back-to-the-theme-post-id' ] ) ) {
-			return;
-		}
-
-		if (
-			! isset( $_POST['back_to_my_theme_nonce'] )
-			|| ! wp_verify_nonce( $_POST['back_to_my_theme_nonce'], 'generate_previews' )
-		) {
-			wp_die( __( 'Sorry, there was a problem submitting your data. Try again.', 'back-to-the-theme' ) );
-			exit;
-		}
 
 		?>
 		<div id="back-to-the-theme-previews" class="back-to-the-theme-container">
 		<script type="text/javascript">
 		function resizeIframe(iframe) {
+			document.getElementById(iframe.id + '-loading').style.display = 'none';
 			iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
 		}
 		</script>
 			<?php
 				$secret = self::update_secret();
 				$side = self::get_side();
-				$hide_admin_bar = isset( $_POST['back-to-the-theme-hide-admin-bar'] );
-				$id = isset( $_POST['back-to-the-theme-post-id'] ) && intval( $_POST['back-to-the-theme-post-id'] )
-					? intval( $_POST['back-to-the-theme-post-id'] )
-					: absint( $_POST['page_id'] );
 
-				foreach( $_POST['back_to_the_theme'] as $theme => $k ) {
-					if ( ! isset( $themes[ $theme ] ) ) {
-						echo sprintf( __( 'Requested theme "%s" was not available.', 'back-to-the-theme' ), $theme );
+				$hide_admin_bar = true;
+				$id = isset( $_GET['back-to-the-theme-post-id'] ) && intval( $_GET['back-to-the-theme-post-id'] )
+					? intval( $_GET['back-to-the-theme-post-id'] )
+					: absint( $_GET['page_id'] );
+
+				$tags = isset( $_GET['tags'] ) ? explode(',', $_GET['tags'] ) : [];
+
+				foreach( $themes as $theme => $k ) {
+
+					if( ! empty( $tags ) && ! array_intersect( $tags, $k->get( 'Tags' ) ) ) {
 						continue;
 					}
 
 					$url = self::get_preview_url( $theme, $id, $secret, $hide_admin_bar, $side );
 					$theme_name = $themes[ $theme ]->get( 'Name' );
 					$theme_version = $themes[ $theme ]->get( 'Version' );
+
 					?>
-					<div class="back-to-the-theme-preview" id="back-to-the-theme-preview-<?php esc_attr_e( $theme ); ?>">
-						<h2 class="alignleft">
-							<?php echo esc_html( $theme_name ); ?>
-							<?php if ( ! empty( $theme_version ) ): ?>
-								<small><?php
+					<div class="back-to-the-theme-preview-info" >
+						<span id="theme-<?php esc_attr_e( $theme ); ?>-loading" class="spinner is-active"></span>
+						<p><strong><?php echo esc_html( $theme_name ); ?></strong>  <small><?php
 									echo sprintf( _x( 'v%s', 'version number, e.g. v1.0', 'back-to-the-theme' ), esc_html( $theme_version ) );
-								?></small>
-							<?php endif; ?>
-						</h2>
-						<p>
-							<a href="<?php echo esc_url( $url ); ?>" target="_blank" class="button-secondary alignright"><?php
+								?></small> theme.</p>
+								<p style="max-width: 80%"> Tags: <?php echo implode( ', ',  $k->get( 'Tags' ) ); ?></p> </a>
+								<a href="<?php echo esc_url( $url ); ?>" target="_blank" class="button-secondary alignright"><?php
 								esc_html_e( 'Open in new tab', 'back-to-the-theme' );
 							?></a>
-						</p>
+					</div>
+					<div class="back-to-the-theme-preview" id="back-to-the-theme-preview-<?php esc_attr_e( $theme ); ?>">
 						<iframe
+							id="theme-<?php esc_attr_e( $theme ); ?>"
 							onload="resizeIframe(this)"
 							loading="lazy"
 							frameborder="0"
@@ -192,10 +184,11 @@ class BackToTheTheme {
 
 	static function render_form( $themes ) {
 		$side = self::get_side();
-		$hide_admin_bar = isset( $_POST['back-to-the-theme-hide-admin-bar'] ) || empty( $_POST );
+		$hide_admin_bar = isset( $_GET['back-to-the-theme-hide-admin-bar'] ) || empty( $_GET );
 
 		?>
-		<form method="post" action="<?php echo admin_url('tools.php?page=back-to-the-theme'); ?>#back-to-the-theme-previews">
+		<form method="get" action="<?php echo admin_url('tools.php?page=back-to-the-theme'); ?>#back-to-the-theme-previews">
+			<input type="hidden" name="page" value="back-to-the-theme" />
 			<?php wp_nonce_field( 'generate_previews', 'back_to_my_theme_nonce' ); ?>
 
 			<label>
@@ -209,7 +202,7 @@ class BackToTheTheme {
 						id="back-to-the-theme-post-id"
 						name="back-to-the-theme-post-id"
 						type="text"
-						value="<?php echo isset( $_POST['back-to-the-theme-post-id'] ) ? esc_attr( $_POST['back-to-the-theme-post-id'] ) : ''; ?>"
+						value="<?php echo isset( $_GET['back-to-the-theme-post-id'] ) ? esc_attr( $_GET['back-to-the-theme-post-id'] ) : ''; ?>"
 					>
 			</label>
 
@@ -227,51 +220,7 @@ class BackToTheTheme {
 				</label>
 			</p>
 
-			<label>
-				<input
-					<?php checked( '1', $hide_admin_bar ); ?>
-					id="back-to-the-theme-hide-admin-bar"
-					name="back-to-the-theme-hide-admin-bar"
-					type="checkbox"
-					value="1"
-				>
-				<?php esc_html_e( 'Hide admin bar in previews', 'back-to-the-theme' ); ?>
-			</label>
-
-			<br/><br />
-
-			<strong id="back-to-the-theme-themes"><?php esc_html_e( 'Choose Themes', 'back-to-the-theme' ); ?></strong><br/>
-			<?php
-				foreach( $themes as $theme_slug => $theme ) {
-					$theme_checked = isset( $_POST['back_to_the_theme'] ) && isset( $_POST['back_to_the_theme'][ $theme_slug ] ) ? true : false;
-
-					?>
-					<label for="back_to_the_theme_<?php esc_attr_e( $theme_slug ); ?>">
-						<input
-							<?php checked( '1', $theme_checked ); ?>
-							id="back_to_the_theme_<?php esc_attr_e( $theme_slug ); ?>"
-							name="back_to_the_theme[<?php esc_attr_e( $theme_slug ); ?>]"
-							type="checkbox"
-							value="1"
-						>
-						<?php echo esc_html( $theme->get( 'Name' ) ); ?>
-						<?php if ( ! empty( $theme->get( 'Version' ) ) ): ?>
-							<small><?php
-								echo sprintf( _x( 'v%s', 'version number, e.g. v1.0', 'back-to-the-theme' ), esc_html( $theme->get( 'Version' ) ) );
-							?></small>
-						<?php endif; ?>
-					</label>
-					<?php if ( $theme_checked ): ?>
-						(<a href="#back-to-the-theme-preview-<?php esc_attr_e( $theme_slug ); ?>"><?php
-							esc_html_e( 'Jump to preview', 'back-to-the-theme' );
-						?></a>)
-					<?php endif; ?>
-					<br/>
-					<?php
-				}
-			?>
-
-			<br/><br />
+			<br/>
 
 			<button class="button button-primary" type="submit">
 				<?php esc_html_e( 'Do it!', 'back-to-the-theme' ); ?>
