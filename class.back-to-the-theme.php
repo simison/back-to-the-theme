@@ -133,6 +133,11 @@ class BackToTheTheme {
 
 		?>
 		<div id="back-to-the-theme-previews" class="back-to-the-theme-container">
+		<script type="text/javascript">
+		function resizeIframe(iframe) {
+			iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
+		}
+		</script>
 			<?php
 				$secret = self::update_secret();
 				$side = self::get_side();
@@ -166,6 +171,8 @@ class BackToTheTheme {
 							?></a>
 						</p>
 						<iframe
+							onload="resizeIframe(this)"
+							loading="lazy"
 							frameborder="0"
 							src="<?php echo esc_url( $url ); ?>"
 							title="<?php esc_attr_e( $theme ); ?>"
