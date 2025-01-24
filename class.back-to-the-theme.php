@@ -74,16 +74,14 @@ class BackToTheTheme {
 		return $theme ? $theme->stylesheet : $stylesheet;
 	}
 
-	public static function get_preview_url( $theme, $id, $secret, $hide_admin_bar = true, $side ) {
-		$query_args = array(
-			'back-to-the-theme-secret' => $secret,
-			'back-to-the-theme' => $theme,
-			'flux-capacitor-cache-buster' => time(),
-		);
+	public static function get_preview_url( $theme, $id, $secret, $side ) {
 
-		if ( $hide_admin_bar ) {
-			$query_args['back-to-the-theme-hide-admin-bar'] = true;
-		}
+		$query_args = array(
+			'back-to-the-theme-secret' 			=> $secret,
+			'back-to-the-theme' 				=> $theme,
+			'flux-capacitor-cache-buster' 		=> time(),
+			'back-to-the-theme-hide-admin-bar'  => true,
+		);
 
 		if ( empty( $id ) ) {
 			$url = home_url();
@@ -132,7 +130,7 @@ class BackToTheTheme {
 				$secret = self::update_secret();
 				$side = self::get_side();
 
-				$hide_admin_bar = true;
+
 				$id = isset( $_GET['back-to-the-theme-post-id'] ) && intval( $_GET['back-to-the-theme-post-id'] )
 					? intval( $_GET['back-to-the-theme-post-id'] )
 					: absint( $_GET['page_id'] );
@@ -145,7 +143,7 @@ class BackToTheTheme {
 						continue;
 					}
 
-					$url = self::get_preview_url( $theme, $id, $secret, $hide_admin_bar, $side );
+					$url = self::get_preview_url( $theme, $id, $secret, $side );
 					$theme_name = $themes[ $theme ]->get( 'Name' );
 					$theme_version = $themes[ $theme ]->get( 'Version' );
 
