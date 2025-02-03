@@ -18,3 +18,20 @@
 	resize: both;
 	width: 100%;
 }
+
+.back-to-the-theme-preview-info {
+	position: sticky;
+	top: 28px;
+	padding: 16px;
+	background: #FFF;
+	max-height: 20px;
+	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+}
+
+.back-to-the-theme-preview-info .spinner {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
