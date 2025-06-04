@@ -227,18 +227,29 @@ class BackToTheTheme {
 				</label>
 			</p>
 
-			<label>
-				<input
-					<?php checked( '1', $hide_admin_bar ); ?>
-					id="back-to-the-theme-hide-admin-bar"
-					name="back-to-the-theme-hide-admin-bar"
-					type="checkbox"
-					value="1"
-				>
-				<?php esc_html_e( 'Hide admin bar in previews', 'back-to-the-theme' ); ?>
-			</label>
-
+			<p>
+				<label>
+					<input
+						<?php checked( '1', $hide_admin_bar ); ?>
+						id="back-to-the-theme-hide-admin-bar"
+						name="back-to-the-theme-hide-admin-bar"
+						type="checkbox"
+						value="1"
+					>
+					<?php esc_html_e( 'Hide admin bar in previews', 'back-to-the-theme' ); ?>
+				</label>
+			</p>
 			<br/><br />
+			<p>
+			 	<label for="back_to_the_theme_check_all">
+					<input
+						id="back_to_the_theme_check_all"
+						type="checkbox"
+						onclick="toggleAllThemes(this.checked)"
+					>
+					<strong><?php esc_html_e( 'Check All Themes', 'back-to-the-theme' ); ?></strong>
+			 	</label>
+			</p>
 
 			<strong id="back-to-the-theme-themes"><?php esc_html_e( 'Choose Themes', 'back-to-the-theme' ); ?></strong><br/>
 			<?php
@@ -276,6 +287,14 @@ class BackToTheTheme {
 			<button class="button button-primary" type="submit">
 				<?php esc_html_e( 'Do it!', 'back-to-the-theme' ); ?>
 			</button>
+			<script type="text/javascript">
+				function toggleAllThemes(checked) {
+					const themeCheckboxes = document.querySelectorAll('input[name^="back_to_the_theme["]');
+					themeCheckboxes.forEach(checkbox => {
+						checkbox.checked = checked;
+					});
+				}
+			</script>
 		</form>
 		<?php
 	}
